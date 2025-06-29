@@ -41,7 +41,7 @@ const Comments = ({ comment = {}, onSubmitComment = () => {} }) => {
           Delete
         </button>
 
-        {expand &
+        {expand & 
         (
           <div className="w-full flex items-center overflow-hidden">
             <textarea
