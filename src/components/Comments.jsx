@@ -1,67 +1,78 @@
 import { useState } from "react";
 
 const Comments = ({ comment = {}, onSubmitComment = () => {} }) => {
+  console.log(comment);
+  const [replyContent, setReplyConetn] = useState("");
   const [expand, setExpand] = useState(false);
-  const [reply, setReply] = useState("");
+  const handleExpand = () => {
+    setExpand(!expand);
+  };
 
   const handleReplyChange = (e) => {
-    setReply(e.target.value);
+    setReplyConetn(e.target.value);
   };
 
   const handleReplySubmit = () => {
-    if (reply) {
+    if (replyContent) {
       // logic
-
-      setReply("");
+      setReplyConetn("");
     }
   };
 
-  const handleReplyShow = () => {
-    setExpand(!expand);
-  };
   return (
-    <div className="w-full">
-      <p className="text-4xl">{comment.content}</p>
-      <p className="text-4xl">{comment.votes}</p>
-      <p className="text-4xl">
-        {new Date(comment.timestamp).toLocaleTimeString()}
-      </p>
+    <div className="w-full bg-blue-200 p-4 rounded-md">
+      <div className="flex flex-col gap-1">
+        <p>{comment.content}</p>
+        <p>{comment.votes}</p>
+        <p>{new Date(comment.timestamp).toLocaleString()}</p>
+      </div>
 
-      <div className="flex gap-4">
+      {/* buttons */}
+      <div className="flex gap-3 mt-2">
         <button
-          onClick={handleReplyShow}
-          className="bg-blue-500 rounded-md py-2 px-8 cursor-pointer"
+          onClick={handleExpand}
+          className="bg-blue-400 py-2 px-8 rounded-md cursor-pointer"
         >
-          {expand ? "Hide Reply" : "Reply"}
+          {expand ? "Hide Comment" : "Reply"}
         </button>
-        <button className="bg-blue-500 rounded-md py-2 px-8 cursor-pointer">
+        <button className="bg-blue-400 py-2 px-8 rounded-md cursor-pointer">
           Edit
         </button>
-        <button className="bg-blue-500 rounded-md py-2 px-8 cursor-pointer">
+        <button className="bg-blue-400 py-2 px-8 rounded-md cursor-pointer">
           Delete
         </button>
+      </div>
 
-        {expand &
-        (
-          <div className="w-full flex items-center overflow-hidden">
+      {expand && (
+        <div className="w-full flex flex-col">
+          <div className="w-full flex">
             <textarea
-              value={reply}
+              value={replyContent}
               onChange={handleReplyChange}
-              cols={5}
-              rows={5}
-              className="p-4 w-full border-2 rounded-2xl"
-              placeholder="Write your thoughts"
+              cols={50}
+              rows={3}
+              className="border w-full p-4 rounded-2xl"
+              placeholder="Add a New Comment..."
             />
-
             <button
               onClick={handleReplySubmit}
-              className="bg-purple-700 text-white font-bold rounded-md py-4 px-10 cursor-pointer"
+              className="px-10 bg-blue-400 cursor-pointer  rounded-2xl"
             >
-              Add comment
+              Add Comment
             </button>
           </div>
-        )}
-      </div>
+
+          {comment?.replies?.map((reply) => {
+            return (
+              <Comments
+                key={reply.id}
+                comment={reply}
+                onSubmitComment={onSubmitComment}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
