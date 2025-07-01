@@ -8,54 +8,58 @@ const NestedComments = ({
   onEdit = () => {},
   onDelete = () => {},
 }) => {
-  const { comment, setComment } = useState("");
+  const [comment, setComment] = useState("");
   const { comments: commentsData } = useCommentTree(comments);
 
   const handleChange = (e) => {
     setComment(e.target.value);
   };
 
-  const handleReplyComment = () => {
-    // something here
+  const handleReply = () => {
+    //
   };
 
   const handleSubmit = () => {
     if (comment) {
-      // logic here
+      // logic
 
       setComment("");
     }
   };
+  console.log(comment);
+
   return (
-    <>
-      <div className="w-full flex items-center overflow-hidden">
+    <div className="w-full flex flex-col gap-10 px-6">
+      <h1 className="text-4xl text-blue-600 font-bold">Nested Component</h1>
+
+      <div className="w-full flex">
         <textarea
           value={comment}
           onChange={handleChange}
-          cols={5}
-          rows={5}
-          className="p-4 w-full border-2 rounded-2xl"
-          placeholder="Write your thoughts"
+          cols={50}
+          rows={3}
+          className="border w-full p-4 rounded-2xl"
+          placeholder="Add a New Comment..."
         />
-
         <button
           onClick={handleSubmit}
-          className="bg-purple-700 text-white font-bold rounded-md py-4 px-10 cursor-pointer"
+          className="px-10 bg-blue-400 cursor-pointer  rounded-2xl"
         >
-          Add comment
+          Add Comment
         </button>
       </div>
 
+      {/* comments data */}
       {commentsData?.map((comment) => {
         return (
           <Comments
             key={comment.id}
             comment={comment}
-            onSubmitComment={handleReplyComment}
+            onSubmitComment={handleReply}
           />
         );
       })}
-    </>
+    </div>
   );
 };
 
